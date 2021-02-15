@@ -1,77 +1,71 @@
 package ru.netology.domain;
 
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class RadioTest {
+    Radio radio = new Radio();
 
-    @ParameterizedTest
-    @CsvSource(
-            value = {
-                    "'From zero station'; 0; 1",
-                    "'Go last station'; 8; 9",
-                    "'More maximum station'; 9; 0"
-            }
-            , delimiter = ';'
-    )
-    void pressNextStationTest(String name, int start, int expected) {
-        Radio radio=new Radio();
-        radio.setCurrentStation(start);
-
-        radio.pressNextStation();
-        assertEquals(expected, radio.getCurrentStation());
+    @Test
+    void shouldSwitchStationUpToRound() {
+        radio.switchStationUp(); // 0~1
+        radio.switchStationUp(); // 1~2
+        radio.switchStationUp(); // 2~3
+        radio.switchStationUp(); // 3~4
+        radio.switchStationUp(); // 4~5
+        radio.switchStationUp(); // 5~6
+        radio.switchStationUp(); // 6~7
+        radio.switchStationUp(); // 7~8
+        radio.switchStationUp(); // 8~9
+        radio.switchStationUp(); // 9~0
+        assertEquals(0, radio.getStation());
     }
 
-    @ParameterizedTest
-    @CsvSource(
-            value = {
-                    "'From middle station'; 5; 4",
-                    "'Go first station'; 1; 0",
-                    "'Less minimum station'; 0; 9"
-            }
-            , delimiter = ';'
-    )
-    void pressPrevStationTest(String name, int start, int expected) {
-        Radio radio=new Radio();
-        radio.setCurrentStation(start);
-
-        radio.pressPrevStation();
-        assertEquals(expected, radio.getCurrentStation());
+    @Test
+    void shouldSwitchStationDownToRound() {
+        radio.switchStationDown(); // 0~9
+        radio.switchStationDown(); // 9~8
+        assertEquals(8, radio.getStation());
     }
 
-    @ParameterizedTest
-    @CsvSource(
-            value = {
-                    "'Zero volume'; 0; 1",
-                    "'Go max volume'; 9; 10",
-                    "'More maximum volume'; 10; 10"
-            }
-            , delimiter = ';'
-    )
-    void pressPlusVolumeTest(String name, int start, int expected) {
-        Radio radio=new Radio();
-        radio.setCurrentVolume(start);
-
-        radio.pressPlusVolume();
-        assertEquals(expected, radio.getCurrentVolume());
+    @Test
+    void shouldSpecifyStationPositive() {
+        radio.setStation(5);
+        assertEquals(5, radio.getStation());
     }
 
-    @ParameterizedTest
-    @CsvSource(
-            value = {
-                    "'Middle volume'; 5; 4",
-                    "'Go min volume'; 1; 0",
-                    "'Less minimum volume'; 0; 0"
-            }
-            , delimiter = ';'
-    )
-    void pressMinusVolumeTest(String name, int start, int expected) {
-        Radio radio=new Radio();
-        radio.setCurrentVolume(start);
+    @Test
+    void shouldSpecifyStationNegative() {
+        radio.setStation(50);
+        assertEquals(0, radio.getStation());
+    }
 
-        radio.pressMinusVolume();
-        assertEquals(expected, radio.getCurrentVolume());
+    @Test
+    void shouldSpecifyStationNegative2() {
+        radio.setStation(-50);
+        assertEquals(0, radio.getStation());
+    }
+
+    @Test
+    void shouldIncreaseVolume() {
+        radio.increaseVolume(); // 3~4
+        radio.increaseVolume(); // 4~5
+        radio.increaseVolume(); // 5~6
+        radio.increaseVolume(); // 6~7
+        radio.increaseVolume(); // 7~8
+        radio.increaseVolume(); // 8~9
+        radio.increaseVolume(); // 9~10
+        radio.increaseVolume(); // 10~10
+        assertEquals(10, radio.getVolume());
+    }
+
+    @Test
+    void shouldDecreaseVolume() {
+        radio.decreaseVolume(); // 3~2
+        radio.decreaseVolume(); // 2~1
+        radio.decreaseVolume(); // 1~0
+        radio.decreaseVolume(); // 0~0
+        assertEquals(0, radio.getVolume());
     }
 }

@@ -1,63 +1,66 @@
 package ru.netology.domain;
 
 public class Radio {
-    private int currentStation;
-    private int currentVolume;
+    private int station = 0;
+    private int volume = 3;
 
-    private final int maxStation=9;
-    private final int minStation=0;
-    private final int maxVolume=10;
-    private final int minVolume=0;
+    /* Установка параметров */
 
-    public int getCurrentStation() {
-        return currentStation;
-    }
-
-    public void setCurrentStation(int currentStation) {
-        if(currentStation>maxStation){
+    public void setStation(int station) {
+        if (station > 9) {
             return;
         }
-        if(currentStation<minStation){
+        if (station < 0) {
             return;
         }
-        this.currentStation = currentStation;
+        this.station = station;
     }
 
-    public int getCurrentVolume() {
-        return currentVolume;
+    public void setVolume(int volume) {
+        this.volume = volume;
     }
 
-    public void setCurrentVolume(int currentVolume) {
-        if(currentVolume>maxVolume){
+    /* Оперирование станциями */
+
+    public void switchStationUp() {
+        if (station == 9) {
+            setStation(0);
             return;
         }
-        if(currentVolume<minVolume){
+        setStation(station + 1);
+    }
+
+    public void switchStationDown() {
+        if (station == 0) {
+            setStation(9);
             return;
         }
-        this.currentVolume = currentVolume;
+        setStation(station - 1);
     }
 
-    public void pressNextStation(){
-        if(currentStation>=maxStation){
-            setCurrentStation(minStation);
-        }else{
-            setCurrentStation(currentStation+1);
+    /* Регулировка громкости */
+
+    public void increaseVolume() {
+        if (volume == 10) {
+            return;
         }
+        setVolume(volume + 1);
     }
 
-    public void pressPrevStation(){
-        if(currentStation<=minStation){
-            setCurrentStation(maxStation);
-        }else{
-            setCurrentStation(currentStation-1);
+    public void decreaseVolume() {
+        if (volume == 0) {
+            return;
         }
+        setVolume(volume - 1);
     }
 
-    public void pressPlusVolume(){
-        setCurrentVolume(currentVolume+1);
+    /* Getters */
+
+    public int getVolume() {
+        return volume;
     }
 
-    public void pressMinusVolume(){
-        setCurrentVolume(currentVolume-1);
+    public int getStation() {
+        return station;
     }
 }
